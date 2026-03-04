@@ -39,5 +39,45 @@ try {
     })
 }
 };
+//login
+const loginController =async(req,res)=>{
+    try {
+       const {email,password} =req.body
+       // validation
+       if(!email||!password){
+        req.status(500).send({
 
-module.exports ={registerController}
+            success:false,
+            message:'Please Provide Email or Password'
+        });
+       }
+       // checkuser
+       const user =await userModel.findOne({email:email,password:password})
+       if(!user){
+        return res.status(404).send({
+            success:false,
+            message:'User not Found or Password is incorrect '
+        });
+
+       }
+       // login 
+       res.status(200).send({
+        success:true,
+        message:'Login Successfully ',
+        user
+       })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'Error in login Api',
+            Error
+
+        })
+        
+    }
+
+};
+
+module.exports ={registerController,loginController}
