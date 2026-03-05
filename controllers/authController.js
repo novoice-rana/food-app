@@ -1,4 +1,6 @@
 const userModel = require("../models/userModel");
+const bcrypt= require('bcryptjs')
+const JWT= require('jsonwebtoken') 
 
 // Register 
 const registerController =async (req,res)=>{
@@ -19,10 +21,13 @@ try {
         message:'Email Already Exist'});
        
     }
+    // hashing 
+    var salt= bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(password,salt)
 
     //create User 
     const user= await userModel.create({
-        userName,email,password,address,phone
+        userName,email,password:hashedPassword,address,phone
     });
     res.status(201).send({
         success:true,
@@ -52,19 +57,35 @@ const loginController =async(req,res)=>{
         });
        }
        // checkuser
-       const user =await userModel.findOne({email:email,password:password})
+       const user =await userModel.findOne({email:email})
        if(!user){
         return res.status(404).send({
             success:false,
-            message:'User not Found or Password is incorrect '
+            message:'User not Found  '
         });
 
        }
-       // login 
+//check user PAssword | compare password
+const isMatch = await bcrypt.compare(password,user.password);
+if(!isMatch){
+    return res.status(500).send({
+        success:false,
+        message:"Invalid Credentials"
+    });
+}
+
+//token 
+
+const token =JWT.sign({id:user._id},process.env.JWT_SECRET,{
+    expiresIn:"7d"
+})
+user.password=undefined      
+// login 
        res.status(200).send({
         success:true,
         message:'Login Successfully ',
-        user
+        user,
+        token
        })
         
     } catch (error) {
