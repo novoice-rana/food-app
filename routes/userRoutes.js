@@ -1,5 +1,5 @@
 const express =require('express')
-const { getUserController, updateUserController, resetPasswordController } = require('../controllers/userController')
+const { getUserController, updateUserController, resetPasswordController, deleteProfileController } = require('../controllers/userController')
 const authMiddleware =require("../middlewares/authMiddleware.js");
 
 
@@ -11,4 +11,6 @@ router.get('/getUser',authMiddleware,getUserController);
 router.put('/updateUser',authMiddleware,updateUserController);
 // reset passwords
 router.post('/resetPassword',authMiddleware,resetPasswordController);
+// delete user
+router.delete('/deleteUser/:id',authMiddleware,deleteProfileController)
 module.exports= router
