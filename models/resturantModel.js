@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 // schema
 const resturantSchema= new mongoose.Schema({
-    titile:{
+    title:{
     type:String,
     required:[true,'Resturant title is Required']
     },
