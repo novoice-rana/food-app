@@ -29,4 +29,33 @@ const createRestrauntController =async (req,res )=>{
         
     }
 };
-module.exports ={createRestrauntController};
+
+//Get all restraunts 
+const getAllResturantController= async (req,res)=>{
+    try {
+        const resturants= await resturantModel.find({
+           
+        })
+         if(!resturants){
+               res.status(400).send({
+                success:false,
+                message:'No Restraunt Available'
+               })
+                
+            }
+        res.status(200).send({
+            success:true,
+            totalCount:resturants.length,
+            resturants
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            sucess:false,
+            message:'Error in get all restraunt api'
+        })
+        
+    }
+
+}
+module.exports ={createRestrauntController,getAllResturantController};
