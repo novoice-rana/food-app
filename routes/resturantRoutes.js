@@ -1,6 +1,6 @@
 const express =require('express')
 const authMiddleware =require("../middlewares/authMiddleware.js");
-const { createRestrauntController, getAllResturantController } = require('../controllers/restrauntController.js');
+const { createRestrauntController, getAllResturantController, getResturantByIdController } = require('../controllers/restrauntController.js');
 
 
 const router =express.Router();
@@ -10,6 +10,8 @@ router.post('/create',authMiddleware,createRestrauntController)
 
 //get all restraunts
 router.get('/getAll',getAllResturantController)
+// get resturant by id
+router.get('/get/:id',getResturantByIdController)
 
 
 module.exports= router

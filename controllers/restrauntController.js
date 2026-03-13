@@ -58,4 +58,30 @@ const getAllResturantController= async (req,res)=>{
     }
 
 }
-module.exports ={createRestrauntController,getAllResturantController};
+// get resturant by id
+const getResturantByIdController=async (req,res)=>{
+    try {
+        const resturant =await resturantModel.findById(req.params.id)
+            if(!resturant){
+                return res.status(404).send({
+                    success:false,
+                    message:'Resturant not Found '
+                })
+            }
+            res.status(200).send({
+                success:true,
+                resturant
+            })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            sucess:false,
+            message:'Error in get all restraunt by id api'
+        })
+        
+        
+    }
+
+}
+module.exports ={createRestrauntController,getAllResturantController,getResturantByIdController};
