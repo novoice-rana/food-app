@@ -26,4 +26,28 @@ try {
 
 }
 }
-module.exports={createCatController}
+
+const getAllCatController = async ()=>{
+    try {
+           if (!categories) {
+      return res.status(404).send({
+        success: false,
+        message: "No Categories found",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      totalCat: categories.length,
+      categories,
+    });
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in get All Cat Api"
+        })
+        
+    }
+
+}
+module.exports={createCatController,getAllCatController}
