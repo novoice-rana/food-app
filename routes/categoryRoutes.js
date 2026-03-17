@@ -6,6 +6,8 @@ const router =express.Router();
 router.post('/create',authMiddleware,createCatController)
 // get all routes
 router.get('/getAll',getAllCatController)
+// update cat
+router.put("/update/:id", authMiddleware, updateCatController);
 
 
 module.exports=router

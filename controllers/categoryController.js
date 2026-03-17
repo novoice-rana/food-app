@@ -27,8 +27,9 @@ try {
 }
 }
 
-const getAllCatController = async ()=>{
+const getAllCatController = async (req,res)=>{
     try {
+          const categories = await categoryModel.find({});
            if (!categories) {
       return res.status(404).send({
         success: false,
@@ -50,4 +51,25 @@ const getAllCatController = async ()=>{
     }
 
 }
-module.exports={createCatController,getAllCatController}
+const updateCatController =async (req,res)=>{
+    try {
+        const updatedCategory= await categoryModel.findByIdAndUpdate(req.params.id,{title:req.body.title,imageUrl:req.body.imageUrl},{new: true})
+        if(!updatedCategory){
+            return res.status(500).send({
+        success: false,
+        message: "No Category Found",
+      });
+        }
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+      success: false,
+      message: "error in update cat api",
+      error,
+    });
+        
+    }
+
+}
+module.exports={createCatController,getAllCatController,updateCatController}
